@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+       #d2{
+        width: 300px;
+        height: 20px;
+        border: 1px solid gray;
+        display: inline-block;
+      }
+      #d3{
+        display: inline-block;
+        background: black;
+        height: 20px;
+      }
+  canvas {
+  	background:url(imgs/107283221.jpg) no-repeat;
+        border: 1px solid black;
+       margin: 0 auto;
+         background-size:cover;
+
+    }
+   body{
+   	/*padding-left: 400px;*/
+   }
+  
+    </style>
+    <script type="text/javascript" src="jquery-1.12.2.js"></script>
+</head>
+
+<body>
+<div class="center"><canvas width="600" height="400" id="cas">
+	<img src="imgs/3484432_092618805000_2.jpg" alt="">
+
+</canvas></div>
+    
+    <!-- <input type="text" value="向左"> -->
+   <!-- 游戏进度条 -->
+
+   <input type="button" value="开始游戏" onclick="startGame()" 
+     >
+    <input type="button" value="暂停游戏" onclick="zangting()" />
+    <span id="d1"> 游戏进行了0秒 </span> <!-- 游戏所进行的时间 -->
+    <span id="d2"><span id="d3"></span></span><!-- 游戏进度条 -->
+   
+</body>
+<script>
+
+
+
+
+
+
+     var dingshiqi;  // 声明星星出现的速度
+     var sj;         //时间计时器
+     var count=0;    //星星的个数
+     var n=0;        //记录游戏时间变量
+
+     function startGame(){//开始点击游戏
+       window.clearInterval(dingshiqi);
+       window.clearInterval(sj)
+      sj = window.setInterval("shijian()",4000);  
+      dingshiqi=window.setInterval("star()",1000);//星星每个出现在屏幕的速度
+
+
+
+// 处理弧度与角度的计算
+function toAngle(radian) {
+    return radian * 180 / Math.PI;
+}
+
+function toRadian(angle) {
+    return angle * Math.PI / 180;
+}
+
+
+
+var cas = document.getElementById('cas');
+
+var ctx = cas.getContext('2d');
+var wdx=100;
+var wdy=100;
+var img = new Image();
+var img1 = new Image();
+
+
+// img.src = './imgs/DMMban.png';
+img.src = './imgs/士兵(1).png';
+
+
+var timer = null;
+img.onload = function() {
+    var width = img.width / 4,
+        height = img.height / 4;
+    var i = 0;
+    clearInterval(timer);
+
+
+    // 这里需要有一个计时器
+    timer = setInterval(function() {
+
+        // 首先擦除以前绘制的内容
+        ctx.clearRect(0, 0, cas.width, cas.height);
+
+        ctx.drawImage(img, i * width, 0, width, height, 100, 100, width, height);
+
+        if (i == 3) {
+            i = 0;
+        } else {
+            i++;
+        }
+
+    }, 200);
+};
+/*  $("input").keyup(function() {
+
+      
+
+    });*/
+$(document).keydown(function(event) {
+    //判断当event.keyCode 为37时（即左方面键），执行函数to_left(); 
+    //判断当event.keyCode 为39时（即右方面键），执行函数to_right();
+    //向左 
+    if (event.keyCode == 37) {
+    	 clearInterval(timer);
+        var width = img.width / 4,
+            height = img.height / 4;
+        var i = 0;
+        // 这里需要有一个计时器
+        timer=setInterval(function() {
+
+            // 首先擦除以前绘制的内容
+            ctx.clearRect(0, 0, cas.width, cas.height);
+            wdx-=20;
+            if (wdx<0) {
+            	wdx=0;
+            	clearInterval(timer);
+            }
+            ctx.drawImage(img, i * width, height, width, height, wdx, wdy, width, height);
+
+            if (i == 3) {
+                i = 0;
+            } else {
+                i++;
+            }
+
+        }, 150);
+    } 
+    //右
+    else if (event.keyCode == 39) {
+    	 clearInterval(timer);
+        var width = img.width / 4,
+            height = img.height / 4;
+        var i = 0;
+
+        // 这里需要有一个计时器
+        timer=setInterval(function() {
+
+            // 首先擦除以前绘制的内容
+            ctx.clearRect(0, 0, cas.width, cas.height);
+wdx+=20;
+  if (wdx==260) {
+            	wdx=260;
+            	clearInterval(timer);
+            }
+             if (wdx==280) {
+            	wdx=280;
+            	clearInterval(timer);
+            }
+if (wdx>550) {
+            	wdx=550;
+            	clearInterval(timer);
+            }
+          
+            ctx.drawImage(img, i * width, 2*height, width, height, wdx, wdy, width, height);
+
+            if (i == 3) {
+                i = 0;
+            } else {
+                i++;
+            }
+
+        }, 150);
+    }
+// 上
+else if (event.keyCode == 38) {
+    	 clearInterval(timer);
+        var width = img.width / 4,
+            height = img.height / 4;
+        var i = 0;
+
+        // 这里需要有一个计时器
+        timer=setInterval(function() {
+
+            // 首先擦除以前绘制的内容
+            ctx.clearRect(0, 0, cas.width, cas.height);
+wdy-=20;
+if (wdy<0) {
+            	wdy=0;
+            	clearInterval(timer);
+            }
+           
+            ctx.drawImage(img, i * width, 3*height, width, height, wdx, wdy, width, height);
+
+            if (i == 3) {
+                i = 0;
+            } else {
+                i++;
+            }
+
+        }, 150);
+    }
+// 后面
+else  if(event.keyCode == 40) {
+    	 clearInterval(timer);
+        var width = img.width / 4,
+            height = img.height / 4;
+        var i = 0;
+
+        // 这里需要有一个计时器
+        timer=setInterval(function() {
+wdy+=20;
+ if (wdy==140) {
+            	wdy=140;
+            	clearInterval(timer);
+            }
+if (wdy>300) {
+            	wdy=300;
+            	clearInterval(timer);
+            }
+            // 首先擦除以前绘制的内容
+            ctx.clearRect(0, 0, cas.width, cas.height);
+
+            ctx.drawImage(img, i * width, 0, width, height, wdx, wdy, width, height);
+
+            if (i == 3) {
+                i = 0;
+            } else {
+                i++;
+            }
+
+
+        }, 150);
+    }
+});
+
+
+
+    }
+    //创建星星的函数
+     function star(){
+        var obj = document.createElement("img");
+        obj.src="xingxing.gif";
+        //星星的随机大小
+        var w= Math.floor(Math.random()*80+20);
+        obj.width=w;
+        //星星出现的随机位置
+        var x=Math.floor(Math.random()*1000+100);
+        var y=Math.floor(Math.random()*400+100);
+        obj.style.position="absolute";
+        obj.style.top=y+"px";
+        obj.style.left=x+"px";
+        //添加点击事件
+         obj.onclick=removeStar;
+         
+         count++;
+         var sp=document.getElementById("d3");
+         sp.style.width=count*15+"px";
+
+         if(count>=20){
+          alert("游戏结束");  //计个数 超过多少个就结束游戏
+          location.reload();  //当游戏结束时候，重新加载
+          /*window.clearInterval(dingshiqi);*/
+         }
+        // document.body.appendChild(obj);//星星在屏幕中显示
+        }
+        //点击删除星星的函数     
+        function removeStar(){
+            this.parentNode.removeChild(this);
+            count--;
+            var sp=document.getElementById("d3");
+         sp.style.width=count*15+"px";
+      }
+      //暂停游戏函数
+      function zangting() {
+        alert("暂停游戏");
+      /* window.clearInterval(dingshiqi);*///清除定时器
+      }
+      function shijian(){
+        n++;
+        var obj=document.getElementById("d1");
+        obj.innerHTML="游戏进行了"+n+"秒";
+
+      }
+</script>
+
+</html>
